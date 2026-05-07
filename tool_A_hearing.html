@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>資産形成ヒアリング＆キャッシュフロー｜石塚有記FPオフィス</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --brand:#0a3d62;--brand-light:#e8f0f8;
+  --fx:#185fa5;--ideco:#1d9e75;--warn:#ba7517;--danger:#c0392b;
+  --bg:#f5f7fa;--surface:#fff;--border:#e0e6ed;--border2:#c8d4e0;
+  --text:#1a2332;--text2:#4a5568;--text3:#8a9bb0;
+  --success:#1d9e75;--warning:#ba7517;--info:#185fa5;
+}
+body{font-family:'Hiragino Kaku Gothic Pro','Meiryo','Yu Gothic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.page-header{background:var(--brand);color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(10,61,98,.18)}
+.page-header .brand{font-size:14px;font-weight:700;line-height:1.3}
+.page-header .brand span{font-size:11px;font-weight:400;opacity:.8;display:block;margin-top:1px}
+.page-header .tool-name{font-size:12px;opacity:.7;background:rgba(255,255,255,.15);padding:4px 10px;border-radius:20px}
+.container{max-width:780px;margin:0 auto;padding:24px 16px 60px}
+.step-nav{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sbn{flex:1;padding:10px 4px;font-size:11px;background:transparent;border:none;cursor:pointer;color:var(--text3);border-right:1px solid var(--border);transition:all .15s;line-height:1.4;text-align:center;font-family:inherit}
+.sbn:last-child{border-right:none}
+.sbn.active{background:var(--brand);color:#fff;font-weight:600}
+.sbn.done{color:var(--success)}
+.prog-bar{height:4px;background:var(--border);border-radius:2px;margin-bottom:24px;overflow:hidden}
+.prog-fill{height:100%;background:var(--brand);border-radius:2px;transition:width .4s}
+.sec{display:none}.sec.active{display:block}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.sec-title{font-size:16px;font-weight:700;color:var(--brand);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--brand-light);display:flex;align-items:center;gap:8px}
+.sub{font-size:12px;font-weight:700;color:var(--text2);margin:18px 0 10px;padding-left:9px;border-left:3px solid var(--brand);border-radius:0}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+@media(max-width:600px){.g2,.g3,.g4{grid-template-columns:1fr 1fr}}
+.f{display:flex;flex-direction:column;gap:5px}
+.f label{font-size:12px;color:var(--text2);font-weight:600;line-height:1.3}
+.f input,.f select,.f textarea{padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:#fff;color:var(--text);width:100%;font-family:inherit;transition:border-color .15s}
+.f textarea{resize:vertical;min-height:56px}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--brand)}
+.hint{font-size:11px;color:var(--text3);margin-top:2px}
+.arow{display:grid;grid-template-columns:2fr 0.9fr 1.1fr auto;gap:8px;align-items:end;margin-bottom:10px}
+.arow .f{margin-bottom:0}
+.add-btn{font-size:12px;color:var(--info);background:none;border:1.5px dashed var(--info);border-radius:8px;padding:7px 14px;cursor:pointer;width:100%;margin-top:6px;font-family:inherit;transition:background .15s}
+.add-btn:hover{background:var(--brand-light)}
+.del-btn{background:none;border:none;color:var(--danger);cursor:pointer;font-size:18px;padding:8px 6px;line-height:1}
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+.btn-b{padding:10px 22px;background:transparent;border:1.5px solid var(--border2);border-radius:9px;font-size:13px;cursor:pointer;color:var(--text2);font-family:inherit;transition:background .15s}
+.btn-n{padding:10px 26px;background:var(--surface);border:1.5px solid var(--brand);border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;color:var(--brand);font-family:inherit;transition:background .15s}
+.btn-b:hover,.btn-n:hover{background:var(--brand-light)}
+.btn-c{padding:10px 26px;background:var(--brand);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .15s}
+.btn-c:hover{opacity:.88}
+.warn-box{background:#fff8ec;border:1.5px solid #f0c060;border-radius:10px;padding:11px 16px;font-size:12px;color:#7a5010;margin-bottom:16px}
+.m-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.mc{background:var(--brand-light);border-radius:10px;padding:14px 16px;border:1px solid #c8d8ec}
+.ml{font-size:11px;color:var(--text2);margin-bottom:4px;font-weight:600}
+.mv{font-size:20px;font-weight:700;color:var(--brand)}
+.ms{font-size:11px;color:var(--text3);margin-top:2px}
+.sc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.sc-card{border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;background:var(--surface)}
+.sc-card.best{border:2px solid var(--success);box-shadow:0 0 0 3px rgba(29,158,117,.08)}
+.leg{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.li{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2)}
+.ld{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.cfw{max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:10px}
+.cft{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
+.cft th{font-weight:700;font-size:11px;color:var(--text2);padding:8px 10px;border-bottom:1.5px solid var(--border);text-align:right;background:var(--brand-light);position:sticky;top:0}
+.cft th:first-child{text-align:left}
+.cft td{padding:6px 10px;border-bottom:1px solid var(--border);text-align:right;color:var(--text)}
+.cft td:first-child{text-align:left;color:var(--text2)}
+.cft tr:hover td{background:#f0f4f8}
+.cft tr.ev-row td{background:#eef4fb}
+.cft tr.ev-row td:first-child{color:var(--info);font-weight:700}
+.tab-row{display:flex;gap:0;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px;width:fit-content}
+.tab{padding:8px 16px;font-size:12px;background:transparent;border:none;cursor:pointer;color:var(--text2);border-right:1px solid var(--border);font-family:inherit;transition:background .15s}
+.tab:last-child{border-right:none}
+.tab.active{background:var(--brand);color:#fff;font-weight:700}
+.ev-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.ev-chip{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid var(--border);color:var(--text2);display:flex;align-items:center;gap:5px;background:var(--surface)}
+.ev-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sc-panel{border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px;background:#f9fafb}
+.sc-row{display:grid;grid-template-columns:100px 1fr 1fr 1fr;gap:10px;align-items:center;margin-bottom:10px}
+.sc-row:last-child{margin-bottom:0}
+.badge{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700}
+.b-s{background:#eee;color:#555}
+.b-ok{background:#e1f5ee;color:#085041}
+.b-w{background:#faeeda;color:#633806}
+.b-d{background:#fce8e8;color:#7a1515}
+.check-group{display:flex;gap:8px;flex-wrap:wrap}
+.check-group label{display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer;padding:6px 12px;border:1.5px solid var(--border);border-radius:20px;transition:all .15s;user-select:none}
+.check-group label:hover{border-color:var(--brand);background:var(--brand-light)}
+.check-group input[type=checkbox]{width:auto}
+.disc{font-size:11px;color:var(--text3);padding:10px 0;border-top:1px solid var(--border);margin-top:4px;line-height:1.6}
+.btn-pdf{padding:10px 22px;background:var(--brand);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;font-family:inherit;transition:opacity .15s}
+.btn-pdf:hover{opacity:.88}
+
+/* ===== 印刷 ===== */
+@media print{
+  .page-header,.step-nav,.prog-bar,.nav-row,.tab-row,.add-btn,.del-btn,.no-print{display:none!important}
+  body{background:#fff}
+  .container{padding:0;max-width:100%}
+  .card{box-shadow:none;border:1px solid #ddd;page-break-inside:avoid}
+  .sec{display:none!important}
+  #s6{display:block!important}
+  #printDoc{display:block!important}
+  .cfw{max-height:none!overflow:visible}
+  .result-wrap{display:block!important}
+}
+#printDoc{display:none}
+.pd{font-family:'Hiragino Kaku Gothic Pro','Meiryo',sans-serif;font-size:9pt;color:#1a1a1a;background:#fff;padding:10mm 13mm 8mm;width:210mm}
+.pd-hdr{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:7px;border-bottom:2.5px solid #0a3d62;margin-bottom:8px}
+.pd-brand{font-size:10pt;color:#0a3d62;font-weight:800;line-height:1.4}
+.pd-meta{text-align:right;font-size:8pt;color:#555;line-height:1.7}
+.pd-client{background:#f0f4f8;border-radius:5px;padding:8px 12px;margin-bottom:9px;display:flex;gap:20px;flex-wrap:wrap;border:0.5px solid #c8d8ec}
+.pd-cl{font-size:7.5pt;color:#666}
+.pd-cv{font-size:10pt;font-weight:800;color:#0a3d62}
+.pd-s{margin-bottom:9px;page-break-inside:avoid}
+.pd-st{font-size:9.5pt;font-weight:800;color:#0a3d62;border-left:3px solid #0a3d62;padding-left:6px;margin-bottom:6px}
+.pd-m3{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:7px}
+.pd-mc{background:#f0f4f8;border-radius:4px;padding:7px 10px;border:0.5px solid #c8d8ec}
+.pd-ml{font-size:7.5pt;color:#555;margin-bottom:2px}
+.pd-mv{font-size:12pt;font-weight:800;color:#0a3d62}
+.pd-ms{font-size:7pt;color:#777;margin-top:1px}
+.pd-sc3{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:7px}
+.pd-sc{border:0.5px solid #ccc;border-radius:4px;padding:7px 10px}
+.pd-sc.mid{border:1.5px solid #1d9e75;background:#f4fbf8}
+.pd-tbl{width:100%;border-collapse:collapse;font-size:8pt}
+.pd-tbl th{background:#f0f4f8;padding:5px 7px;font-weight:700;color:#333;border:0.5px solid #ccc;text-align:right}
+.pd-tbl th:first-child{text-align:left}
+.pd-tbl td{padding:5px 7px;border:0.5px solid #ddd;text-align:right}
+.pd-tbl td:first-child{text-align:left}
+.pd-tbl tr:nth-child(even) td{background:#fafafa}
+.pd-ev td{background:#eef4fb!important;color:#185fa5;font-weight:700}
+.pd-alloc{height:18px;display:flex;border-radius:4px;overflow:hidden;margin:4px 0}
+.pd-seg{height:100%;display:flex;align-items:center;justify-content:center;font-size:7.5pt;font-weight:700;color:#fff;overflow:hidden;white-space:nowrap;min-width:0}
+.pd-footer{margin-top:6px;padding-top:5px;border-top:0.5px solid #ccc;display:flex;justify-content:space-between;font-size:7pt;color:#888}
+.pd-disc{font-size:7pt;color:#aaa;margin-top:6px;padding-top:5px;border-top:0.5px solid #ddd;line-height:1.5}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="brand">石塚有記FPオフィス<span>資産形成コンサルティング　｜　マネーヘルス® 推進協会 北陸支部認定講師</span></div>
+  <div class="tool-name">ツールA：ヒアリング＆キャッシュフロー</div>
+</div>
+
+<div class="container">
+
+<div class="step-nav">
+  <button class="sbn active" onclick="gs(0)">① 基本情報</button>
+  <button class="sbn" onclick="gs(1)">② 収入</button>
+  <button class="sbn" onclick="gs(2)">③ 支出・負債</button>
+  <button class="sbn" onclick="gs(3)">④ 現在の資産</button>
+  <button class="sbn" onclick="gs(4)">⑤ 保障・税務</button>
+  <button class="sbn" onclick="gs(5)">⑥ 目標・方針</button>
+  <button class="sbn" onclick="gs(6)">⑦ 結果</button>
+</div>
+<div class="prog-bar"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+
+<!-- STEP 0 -->
+<div id="s0" class="sec active">
+<div class="card">
+  <p class="sec-title">基本情報</p>
+  <p class="sub">ご本人</p>
+  <div class="g4">
+    <div class="f"><label>名前（下のお名前のみ）</label><input id="firstName" type="text" placeholder="例：太郎"></div>
+    <div class="f"><label>年齢</label><input id="age" type="number" value="42"></div>
+    <div class="f"><label>職業</label><select id="job"><option>会社員</option><option>経営者・役員</option><option>自営業・フリーランス</option><option>公務員</option></select></div>
+    <div class="f"><label>業種</label><input id="industry" type="text" placeholder="製造・IT・医療 など"></div>
+  </div>
+  <p class="sub">お住まい</p>
+  <div class="g2">
+    <div class="f"><label>都道府県</label>
+      <select id="pref">
+        <option value="">選択してください</option>
+        <option>北海道</option><option>青森県</option><option>岩手県</option><option>宮城県</option><option>秋田県</option><option>山形県</option><option>福島県</option><option>茨城県</option><option>栃木県</option><option>群馬県</option><option>埼玉県</option><option>千葉県</option><option>東京都</option><option>神奈川県</option><option>新潟県</option><option>富山県</option><option>石川県</option><option>福井県</option><option>山梨県</option><option>長野県</option><option>岐阜県</option><option>静岡県</option><option>愛知県</option><option>三重県</option><option>滋賀県</option><option>京都府</option><option>大阪府</option><option>兵庫県</option><option>奈良県</option><option>和歌山県</option><option>鳥取県</option><option>島根県</option><option>岡山県</option><option>広島県</option><option>山口県</option><option>徳島県</option><option>香川県</option><option>愛媛県</option><option>高知県</option><option>福岡県</option><option>佐賀県</option><option>長崎県</option><option>熊本県</option><option>大分県</option><option>宮崎県</option><option>鹿児島県</option><option>沖縄県</option>
+      </select>
+    </div>
+    <div class="f"><label>市区町村</label><input id="city" type="text" placeholder="例：福井市、越前市"></div>
+  </div>
+  <p class="sub">配偶者</p>
+  <div class="g4">
+    <div class="f"><label>年齢</label><input id="spouseAge" type="number" placeholder="なし"></div>
+    <div class="f"><label>年収（手取り・万円）</label><input id="spouseIncome" type="number" value="0"></div>
+    <div class="f"><label>退職予定年齢</label><input id="spouseRetireAge" type="number" placeholder="例：60"></div>
+    <div class="f"><label>退職金見込み（万円）</label><input id="spouseRetireBonus" type="number" value="0"></div>
+  </div>
+  <div class="g2">
+    <div class="f"><label>配偶者の収入増加率（年率 %）</label><input id="spouseIncGrowth" type="number" value="0" step="0.5"></div>
+    <div class="f"><label>増加が続く年数</label><input id="spouseIncGrowthYrs" type="number" value="5"></div>
+  </div>
+  <p class="sub">お子さま（3名まで）</p>
+  <div class="g3">
+    <div class="f"><label>第1子 現在年齢</label><input id="c1" type="number" placeholder="なし"></div>
+    <div class="f"><label>第2子 現在年齢</label><input id="c2" type="number" placeholder="なし"></div>
+    <div class="f"><label>第3子 現在年齢</label><input id="c3" type="number" placeholder="なし"></div>
+  </div>
+  <div class="g3">
+    <div class="f"><label>教育方針</label><select id="edu_policy"><option>公立中心</option><option>私立中高一貫</option><option>大学のみ私立</option><option>未定</option></select></div>
+    <div class="f"><label>ご両親の状況</label><select id="parents"><option>健在・元気</option><option>健在・要支援</option><option>介護中</option><option>他界</option></select></div>
+    <div class="f"><label>健康状態</label><select id="health"><option>良好</option><option>持病あり（軽度）</option><option>持病あり（要通院）</option></select></div>
+  </div>
+  <div class="g3">
+    <div class="f"><label>本人 希望退職年齢</label><input id="retireAge" type="number" value="65"></div>
+    <div class="f"><label>本人 退職金見込み（万円）</label><input id="retirement" type="number" value="1500"></div>
+    <div class="f"><label>シミュレーション終了年齢</label><input id="endAge" type="number" value="90"></div>
+  </div>
+  <div class="nav-row"><div></div><button class="btn-n" onclick="gs(1)">次へ →</button></div>
+</div>
+</div>
+
+<!-- STEP 1 -->
+<div id="s1" class="sec">
+<div class="card">
+  <p class="sec-title">収入</p>
+  <p class="sub">本人収入</p>
+  <div class="g3">
+    <div class="f"><label>年収（手取り・万円）</label><input id="income" type="number" value="700"></div>
+    <div class="f"><label>収入増加率（年率 %）</label><input id="incGrowth" type="number" value="1" step="0.5"></div>
+    <div class="f"><label>増加が続く年数</label><input id="incGrowthYrs" type="number" value="10"></div>
+  </div>
+  <p class="sub">その他収入</p>
+  <div class="g3">
+    <div class="f"><label>家賃収入 年間（万円）</label><input id="rent" type="number" value="0"></div>
+    <div class="f"><label>副業・配当 年間（万円）</label><input id="side" type="number" value="0"></div>
+    <div class="f"><label>贈与・相続見込み（万円）</label><input id="inherit" type="number" value="0"></div>
+  </div>
+  <div class="g2">
+    <div class="f"><label>贈与・相続の受取予定年齢</label><input id="inheritAge" type="number" placeholder="例：55"></div>
+    <div class="f"></div>
+  </div>
+  <p class="sub">年金</p>
+  <div class="g3">
+    <div class="f"><label>公的年金 見込み（年・万円）</label><input id="pension" type="number" value="180"></div>
+    <div class="f"><label>受取開始年齢</label><input id="pensionAge" type="number" value="65"></div>
+    <div class="f"><label>iDeCo 受取見込み（年・万円）</label><input id="idecoPension" type="number" value="0"></div>
+  </div>
+  <div class="nav-row"><button class="btn-b" onclick="gs(0)">← 戻る</button><button class="btn-n" onclick="gs(2)">次へ →</button></div>
+</div>
+</div>
+
+<!-- STEP 2 -->
+<div id="s2" class="sec">
+<div class="card">
+  <p class="sec-title">支出・負債</p>
+  <p class="sub">日常支出</p>
+  <div class="g3">
+    <div class="f"><label>生活費 月額（万円）</label><input id="living" type="number" value="28"></div>
+    <div class="f"><label>老後の生活費 月額（万円）</label><input id="livingR" type="number" value="22"></div>
+    <div class="f"><label>保険料 月額（万円）</label><input id="insC" type="number" value="3"></div>
+  </div>
+  <div class="g2">
+    <div class="f"><label>インフレ率（年率 %）</label><input id="inflation" type="number" value="1.5" step="0.5"></div>
+    <div class="f"><label>老後の医療・介護費 月額（万円）</label><input id="medR" type="number" value="3"><p class="hint">75歳以降に加算</p></div>
+  </div>
+  <p class="sub">住宅ローン</p>
+  <div class="g3">
+    <div class="f"><label>月返済額（万円）</label><input id="loan" type="number" value="12"></div>
+    <div class="f"><label>残年数（年）</label><input id="loanYrs" type="number" value="25"></div>
+    <div class="f"><label>残高（万円）</label><input id="loanBal" type="number" value="3000"></div>
+  </div>
+  <p class="sub">教育費（3名分）</p>
+  <div class="g4" style="align-items:end">
+    <div class="f"><label>第1子 ピーク（万円/年）</label><input id="edu1" type="number" value="200"></div>
+    <div class="f"><label>年数</label><input id="edu1y" type="number" value="4"></div>
+    <div class="f"><label>開始（第1子が）</label><input id="edu1s" type="number" value="18"></div>
+    <div class="f"><label style="opacity:0">x</label><span style="font-size:12px;color:var(--text3);padding-top:10px">歳から</span></div>
+  </div>
+  <div class="g4" style="align-items:end">
+    <div class="f"><label>第2子 ピーク（万円/年）</label><input id="edu2" type="number" value="0"></div>
+    <div class="f"><label>年数</label><input id="edu2y" type="number" value="4"></div>
+    <div class="f"><label>開始（第2子が）</label><input id="edu2s" type="number" value="18"></div>
+    <div class="f"><label style="opacity:0">x</label><span style="font-size:12px;color:var(--text3);padding-top:10px">歳から</span></div>
+  </div>
+  <div class="g4" style="align-items:end">
+    <div class="f"><label>第3子 ピーク（万円/年）</label><input id="edu3" type="number" value="0"></div>
+    <div class="f"><label>年数</label><input id="edu3y" type="number" value="4"></div>
+    <div class="f"><label>開始（第3子が）</label><input id="edu3s" type="number" value="18"></div>
+    <div class="f"><label style="opacity:0">x</label><span style="font-size:12px;color:var(--text3);padding-top:10px">歳から</span></div>
+  </div>
+  <div class="g2">
+    <div class="f"><label>その他ローン 月額（万円）</label><input id="otherLoan" type="number" value="0"></div>
+    <div class="f"><label>残年数（年）</label><input id="otherLoanYrs" type="number" value="0"></div>
+  </div>
+  <div class="nav-row"><button class="btn-b" onclick="gs(1)">← 戻る</button><button class="btn-n" onclick="gs(3)">次へ →</button></div>
+</div>
+</div>
+
+<!-- STEP 3 -->
+<div id="s3" class="sec">
+<div class="card">
+  <p class="sec-title">現在の資産</p>
+  <p class="sub">円建て資産</p>
+  <div class="g3">
+    <div class="f"><label>預貯金（万円）</label><input id="cash" type="number" value="800"></div>
+    <div class="f"><label>国内株式・投信（万円）</label><input id="jpStock" type="number" value="300"></div>
+    <div class="f"><label>NISA 残高（万円）</label><input id="nisa" type="number" value="100"></div>
+  </div>
+  <div class="g3">
+    <div class="f"><label>iDeCo 残高（万円）</label><input id="ideco" type="number" value="150"></div>
+    <div class="f"><label>不動産 評価額（万円）</label><input id="realestate" type="number" value="0"></div>
+    <div class="f"><label>国内保険 解約返戻金（万円）</label><input id="insurance" type="number" value="200"></div>
+  </div>
+  <p class="sub">外貨・海外資産</p>
+  <div id="foreignAssets">
+    <div class="arow">
+      <div class="f"><label>商品・保険名</label><input class="fa-n" type="text" placeholder="RL360 RSP"></div>
+      <div class="f"><label>通貨</label><select class="fa-c"><option>USD</option><option>GBP</option><option>EUR</option><option>AUD</option><option>HKD</option><option>SGD</option></select></div>
+      <div class="f"><label>評価額（通貨建て）</label><input class="fa-v" type="number" placeholder="50000"></div>
+      <button class="del-btn" onclick="da(this)">×</button>
+    </div>
+  </div>
+  <button class="add-btn" onclick="aa()">＋ 外貨資産を追加</button>
+  <p class="sub">為替レート（概算）</p>
+  <div class="g3">
+    <div class="f"><label>USD/JPY</label><input id="rUSD" type="number" value="150"></div>
+    <div class="f"><label>GBP/JPY</label><input id="rGBP" type="number" value="190"></div>
+    <div class="f"><label>EUR/JPY</label><input id="rEUR" type="number" value="163"></div>
+  </div>
+  <div class="g3">
+    <div class="f"><label>AUD/JPY</label><input id="rAUD" type="number" value="98"></div>
+    <div class="f"><label>HKD/JPY</label><input id="rHKD" type="number" value="19"></div>
+    <div class="f"><label>SGD/JPY</label><input id="rSGD" type="number" value="112"></div>
+  </div>
+  <div class="nav-row"><button class="btn-b" onclick="gs(2)">← 戻る</button><button class="btn-n" onclick="gs(4)">次へ →</button></div>
+</div>
+</div>
+
+<!-- STEP 4 -->
+<div id="s4" class="sec">
+<div class="card">
+  <p class="sec-title">保障・税務</p>
+  <div class="g3">
+    <div class="f"><label>死亡保障 合計（万円）</label><input id="deathC" type="number" value="3000"></div>
+    <div class="f"><label>就業不能 月額（万円）</label><input id="incC" type="number" value="0"></div>
+    <div class="f"><label>医療・がん保険</label><select id="medC"><option>あり（充足）</option><option>あり（不足感あり）</option><option>なし</option></select></div>
+  </div>
+  <div class="g3">
+    <div class="f"><label>確定申告</label><select id="taxR"><option>不要</option><option>あり（副業・不動産）</option><option>あり（事業）</option></select></div>
+    <div class="f"><label>CRS対象の海外口座・保険</label><select id="crs"><option>あり</option><option>なし</option><option>不明</option></select></div>
+    <div class="f"><label>相続対策の必要性</label><select id="estate"><option>今のところ不要</option><option>検討中</option><option>対策済み</option><option>緊急性あり</option></select></div>
+  </div>
+  <div class="f" style="margin-bottom:14px">
+    <label>現在の最大の不安・課題</label>
+    <textarea id="concern" placeholder="老後資金、教育費、ローン返済との両立　など"></textarea>
+  </div>
+  <div class="f">
+    <label>重視していること</label>
+    <div class="check-group">
+      <label><input type="checkbox" value="安全性"> 安全性</label>
+      <label><input type="checkbox" value="流動性"> 流動性</label>
+      <label><input type="checkbox" value="収益性" checked> 収益性</label>
+      <label><input type="checkbox" value="節税"> 節税</label>
+      <label><input type="checkbox" value="相続対策"> 相続対策</label>
+      <label><input type="checkbox" value="外貨分散"> 外貨分散</label>
+    </div>
+  </div>
+  <div class="nav-row"><button class="btn-b" onclick="gs(3)">← 戻る</button><button class="btn-n" onclick="gs(5)">次へ →</button></div>
+</div>
+</div>
+
+<!-- STEP 5 -->
+<div id="s5" class="sec">
+<div class="card">
+  <p class="sec-title">目標・運用方針</p>
+  <div class="g2">
+    <div class="f"><label>老後の目標資産額（万円）</label><input id="goalAsset" type="number" value="8000"></div>
+    <div class="f"><label>外貨資産の想定リターン（年率 %）</label><input id="fxRet" type="number" value="6" step="0.5"></div>
+  </div>
+  <div class="g3">
+    <div class="f"><label>毎月の積立 合計（万円）</label><input id="monthly" type="number" value="8"></div>
+    <div class="f"><label>うち外貨へ（万円）</label><input id="mFX" type="number" value="2"></div>
+    <div class="f"><label>うちNISAへ（万円）</label><input id="mNISA" type="number" value="3"></div>
+  </div>
+  <p class="sub">シナリオ設定</p>
+  <div class="sc-panel">
+    <div class="sc-row">
+      <div style="font-size:11px;color:var(--text3)"></div>
+      <div style="font-size:12px;font-weight:700;color:#c0392b;text-align:center">悲観<br><span style="font-weight:400;font-size:11px">預貯金・元本確保型</span></div>
+      <div style="font-size:12px;font-weight:700;color:#185fa5;text-align:center">標準<br><span style="font-weight:400;font-size:11px">債券・外貨一時払い</span></div>
+      <div style="font-size:12px;font-weight:700;color:#1d9e75;text-align:center">楽観<br><span style="font-weight:400;font-size:11px">株式・投資信託</span></div>
+    </div>
+    <div class="sc-row">
+      <div style="font-size:12px;color:var(--text2)">円建て年率</div>
+      <div class="f"><select id="rB"><option value="0.01">1%</option><option value="0.02" selected>2%</option><option value="0.03">3%</option></select></div>
+      <div class="f"><select id="rM"><option value="0.03">3%</option><option value="0.04" selected>4%</option><option value="0.05">5%</option></select></div>
+      <div class="f"><select id="rG"><option value="0.06">6%</option><option value="0.07">7%</option><option value="0.08" selected>8%</option></select></div>
+    </div>
+    <div class="sc-row">
+      <div style="font-size:12px;color:var(--text2)">積立月額（万円）</div>
+      <div class="f"><input id="mB" type="number" value="5"></div>
+      <div class="f"><input id="mM" type="number" value="8"></div>
+      <div class="f"><input id="mG" type="number" value="12"></div>
+    </div>
+  </div>
+  <div class="f">
+    <label>担当者メモ</label>
+    <textarea id="memo" placeholder="次回提案内容・面談での留意事項など"></textarea>
+  </div>
+  <div class="nav-row"><button class="btn-b" onclick="gs(4)">← 戻る</button><button class="btn-c" onclick="calcAll()">シミュレーション実行 →</button></div>
+</div>
+</div>
+
+<!-- STEP 6 結果 -->
+<div id="s6" class="sec">
+<div class="card">
+  <p class="sec-title">シミュレーション結果</p>
+  <div id="warnBox" style="display:none" class="warn-box"></div>
+  <div class="m-grid" id="metrics"></div>
+  <p class="sub">3シナリオ比較</p>
+  <div class="sc-grid" id="scCards"></div>
+  <div class="tab-row no-print">
+    <button class="tab active" onclick="swTab('cf')">キャッシュフロー</button>
+    <button class="tab" onclick="swTab('alloc')">資産配分</button>
+    <button class="tab" onclick="swTab('table')">年別表</button>
+  </div>
+  <div id="tab-cf">
+    <p style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px">3シナリオの資産残高推移（万円）</p>
+    <div class="ev-chips" id="evChips"></div>
+    <div class="leg" id="legCF"></div>
+    <div style="position:relative;height:280px"><canvas id="chartCF" role="img" aria-label="シナリオ別資産残高推移">資産残高推移</canvas></div>
+  </div>
+  <div id="tab-alloc" style="display:none">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div><p style="font-size:12px;color:var(--text2);margin-bottom:6px">通貨別配分</p><div class="leg" id="legCur"></div><div style="position:relative;height:200px"><canvas id="chartCur" role="img" aria-label="通貨別配分">通貨別配分</canvas></div></div>
+      <div><p style="font-size:12px;color:var(--text2);margin-bottom:6px">カテゴリ別配分</p><div class="leg" id="legCat"></div><div style="position:relative;height:200px"><canvas id="chartCat" role="img" aria-label="カテゴリ別配分">カテゴリ別配分</canvas></div></div>
+    </div>
+  </div>
+  <div id="tab-table" style="display:none">
+    <p style="font-size:12px;color:var(--text2);margin-bottom:6px">年別キャッシュフロー表（標準シナリオ）</p>
+    <div class="cfw"><table class="cft">
+      <thead><tr>
+        <th style="text-align:left;width:90px">年齢 / イベント</th>
+        <th style="width:70px">収入計</th><th style="width:70px">支出計</th><th style="width:62px">収支</th>
+        <th style="width:78px">残高(合計)</th><th style="width:70px">円建て</th><th style="width:70px">外貨(円)</th>
+      </tr></thead>
+      <tbody id="cfBody"></tbody>
+    </table></div>
+  </div>
+  <p class="disc">※本シミュレーションは仮定に基づく試算です。実際の運用成果・税務処理を保証するものではありません。</p>
+  <div class="nav-row">
+    <button class="btn-b no-print" onclick="gs(0)">← 入力に戻る</button>
+    <button class="btn-pdf no-print" onclick="doPrint()">🖨 PDF保存・印刷（A4縦）</button>
+  </div>
+</div>
+</div>
+
+</div><!-- /container -->
+
+<!-- 印刷専用 -->
+<div id="printDoc">
+<div class="pd" id="pdPage">
+  <div class="pd-hdr">
+    <div class="pd-brand">石塚有記FPオフィス<br><span style="font-size:8pt;font-weight:400;color:#444">資産形成コンサルティング　｜　マネーヘルス® 推進協会 北陸支部認定講師</span></div>
+    <div class="pd-meta" id="pdMeta"></div>
+  </div>
+  <div class="pd-client" id="pdClient"></div>
+  <div class="pd-s"><div class="pd-st">現状資産サマリー</div><div class="pd-m3" id="pdMetrics"></div></div>
+  <div class="pd-s"><div class="pd-st">資産配分（通貨別）</div><div id="pdAlloc"></div></div>
+  <div class="pd-s"><div class="pd-st">3シナリオ比較（退職時資産見込み）</div><div class="pd-sc3" id="pdSc"></div></div>
+  <div class="pd-s"><div class="pd-st">キャッシュフロー表（標準シナリオ・抜粋）</div>
+    <table class="pd-tbl"><thead><tr><th style="text-align:left">年齢</th><th>収入計（万円）</th><th>支出計（万円）</th><th>収支（万円）</th><th>資産残高（万円）</th><th>円建て</th><th>外貨</th></tr></thead><tbody id="pdCf"></tbody></table>
+  </div>
+  <div class="pd-disc" id="pdDisc"></div>
+  <div class="pd-footer"><span>石塚有記FPオフィス　｜　マネーヘルス® 推進協会 北陸支部認定講師</span><span id="pdFoot"></span></div>
+</div>
+</div>
+
+<script>
+const STEPS=7;let charts={};let gEv=[];let gRes=[];let gP={};
+function gs(n){
+  document.querySelectorAll('.sec').forEach((s,i)=>s.classList.toggle('active',i===n));
+  document.querySelectorAll('.sbn').forEach((b,i)=>b.classList.toggle('active',i===n));
+  document.getElementById('prog').style.width=Math.round(n/(STEPS-1)*100)+'%';
+  window.scrollTo(0,0);
+}
+function aa(){
+  const c=document.getElementById('foreignAssets');
+  const r=document.createElement('div');r.className='arow';
+  r.innerHTML=`<div class="f"><label>商品・保険名</label><input class="fa-n" type="text" placeholder="商品名"></div>
+    <div class="f"><label>通貨</label><select class="fa-c"><option>USD</option><option>GBP</option><option>EUR</option><option>AUD</option><option>HKD</option><option>SGD</option></select></div>
+    <div class="f"><label>評価額（通貨建て）</label><input class="fa-v" type="number" placeholder="30000"></div>
+    <button class="del-btn" onclick="da(this)">×</button>`;
+  c.appendChild(r);
+}
+function da(b){b.closest('.arow').remove()}
+function vv(id){return parseFloat(document.getElementById(id).value)||0}
+function iv(id){return parseInt(document.getElementById(id).value)||0}
+function sv(id){return document.getElementById(id).value}
+function swTab(t){
+  ['cf','alloc','table'].forEach((x,i)=>{
+    document.getElementById('tab-'+x).style.display=x===t?'block':'none';
+    document.querySelectorAll('.tab')[i].classList.toggle('active',x===t);
+  });
+}
+function buildEv(p){
+  const ev=[];
+  const add=(a,l,c)=>{if(a&&a>=p.age&&a<=p.endAge)ev.push({age:a,label:l,color:c})};
+  add(p.retireAge,'本人退職','#185fa5');
+  add(p.pensionAge,'年金開始','#1d9e75');
+  if(p.loanYrs>0)add(p.age+p.loanYrs,'ローン完済','#ba7517');
+  if(p.spouseRetireAge)add(p.spouseRetireAge,'配偶者退職','#7f77dd');
+  if(p.inheritAge)add(p.inheritAge,'贈与・相続','#d85a30');
+  p.eduData.forEach((e,i)=>{
+    if(e.age&&e.cost>0){const sa=p.age+(e.start-e.age);add(sa,`第${i+1}子教育費開始`,'#993356');add(sa+e.yrs-1,`第${i+1}子教育費終了`,'#993356');}
+  });
+  add(75,'後期高齢者','#888780');
+  return ev.sort((a,b)=>a.age-b.age);
+}
+function runSc(p){
+  let jpB=p.jpBal0,fxB=p.fxBal0;const cf=[];
+  for(let y=0;y<=p.endAge-p.age;y++){
+    const ca=p.age+y,ret=ca>=p.retireAge,hasPen=ca>=p.pensionAge,inf=Math.pow(1+p.inflation,y);
+    let yi=0;
+    if(!ret){
+      const gf=y<p.incGrowthYrs?Math.pow(1+p.incGrowth,y):Math.pow(1+p.incGrowth,p.incGrowthYrs);
+      yi=p.income*gf;
+      if(p.spouseRetireAge&&ca<p.spouseRetireAge){const sf=y<p.spouseIncGrowthYrs?Math.pow(1+p.spouseIncGrowth,y):Math.pow(1+p.spouseIncGrowth,p.spouseIncGrowthYrs);yi+=p.spouseIncome*sf;}
+      yi+=p.rentInc+p.sideInc;
+    } else {yi=(hasPen?p.pension+p.idecoPension:0)+p.rentInc+p.sideInc;}
+    if(ca===p.retireAge)yi+=p.retirement;
+    if(p.spouseRetireAge&&ca===p.spouseRetireAge)yi+=p.spouseRetireBonus;
+    if(p.inheritAge&&ca===p.inheritAge)yi+=p.inherit;
+    let yo=(ret?p.livingR:p.living)*inf+p.insC;
+    if(ca>=75)yo+=p.medR*inf;
+    if(y<p.loanYrs)yo+=p.loan;
+    if(y<p.otherLoanYrs)yo+=p.otherLoan;
+    p.eduData.forEach(e=>{if(e.age&&ca-e.age>=e.start&&ca-e.age<e.start+e.yrs)yo+=e.cost;});
+    const cashflow=yi-yo,saveJP=ret?0:(p.monthly-p.mFX),saveFX=ret?0:p.mFX;
+    jpB=jpB*(1+p.returnRate*0.5)+cashflow+saveJP;fxB=fxB*(1+p.fxRet)+saveFX;
+    if(jpB<0){fxB+=jpB;jpB=0}if(fxB<0)fxB=0;
+    cf.push({age:ca,yi:Math.round(yi),yo:Math.round(yo),cf:Math.round(cashflow),jp:Math.round(jpB),fx:Math.round(fxB),total:Math.round(jpB+fxB)});
+  }
+  return cf;
+}
+function calcAll(){
+  gs(6);
+  const rates={USD:vv('rUSD'),GBP:vv('rGBP'),EUR:vv('rEUR'),AUD:vv('rAUD'),HKD:vv('rHKD'),SGD:vv('rSGD')};
+  const age=iv('age'),endAge=iv('endAge'),retireAge=iv('retireAge'),pensionAge=iv('pensionAge');
+  const spouseRetireAge=iv('spouseRetireAge'),spouseRetireBonus=vv('spouseRetireBonus');
+  const income=vv('income'),spouseIncome=vv('spouseIncome');
+  const incGrowth=vv('incGrowth')/100,incGrowthYrs=iv('incGrowthYrs');
+  const spouseIncGrowth=vv('spouseIncGrowth')/100,spouseIncGrowthYrs=iv('spouseIncGrowthYrs');
+  const rentInc=vv('rent'),sideInc=vv('side'),inherit=vv('inherit'),inheritAge=iv('inheritAge');
+  const retirement=vv('retirement'),pension=vv('pension'),idecoPension=vv('idecoPension');
+  const living=vv('living')*12,livingR=vv('livingR')*12,insC=vv('insC')*12,medR=vv('medR')*12;
+  const inflation=vv('inflation')/100,loan=vv('loan')*12,loanYrs=iv('loanYrs');
+  const otherLoan=vv('otherLoan')*12,otherLoanYrs=iv('otherLoanYrs');
+  const eduData=[
+    {age:iv('c1'),cost:vv('edu1'),yrs:iv('edu1y'),start:iv('edu1s')},
+    {age:iv('c2'),cost:vv('edu2'),yrs:iv('edu2y'),start:iv('edu2s')},
+    {age:iv('c3'),cost:vv('edu3'),yrs:iv('edu3y'),start:iv('edu3s')}
+  ];
+  const fxRet=vv('fxRet')/100,goalAsset=vv('goalAsset'),mFX=vv('mFX')*12;
+  let jpBal0=vv('cash')+vv('jpStock')+vv('nisa')+vv('ideco')+vv('insurance');
+  const realestate=vv('realestate');let fxBal0=0;const fxRows=[];
+  document.querySelectorAll('#foreignAssets .arow').forEach(row=>{
+    const name=row.querySelector('.fa-n').value||'海外資産';
+    const cur=row.querySelector('.fa-c').value;
+    const val=parseFloat(row.querySelector('.fa-v').value)||0;
+    const jpy=val*(rates[cur]||150)/10000;
+    fxBal0+=jpy;if(val>0)fxRows.push({name,cur,val,jpy});
+  });
+  const totalAsset=jpBal0+fxBal0+realestate;
+  gP={age,endAge,retireAge,pensionAge,spouseRetireAge,spouseRetireBonus,income,spouseIncome,incGrowth,incGrowthYrs,spouseIncGrowth,spouseIncGrowthYrs,rentInc,sideInc,inherit,inheritAge,retirement,pension,idecoPension,living,livingR,insC,medR,inflation,loan,loanYrs,otherLoan,otherLoanYrs,eduData,fxRet,mFX,jpBal0,fxBal0,realestate,totalAsset,fxRows,goalAsset};
+  gEv=buildEv({age,retireAge,endAge,pensionAge,loanYrs,spouseRetireAge,inheritAge,eduData});
+  document.getElementById('evChips').innerHTML=gEv.map(e=>`<span class="ev-chip"><span class="ev-dot" style="background:${e.color}"></span>${e.age}歳 ${e.label}</span>`).join('');
+  const base={...gP};
+  const scenarios=[
+    {label:'悲観',color:'#c0392b',dash:[4,3],returnRate:parseFloat(sv('rB')),monthly:vv('mB')*12},
+    {label:'標準',color:'#185fa5',dash:[],returnRate:parseFloat(sv('rM')),monthly:vv('mM')*12},
+    {label:'楽観',color:'#1d9e75',dash:[2,2],returnRate:parseFloat(sv('rG')),monthly:vv('mG')*12}
+  ];
+  gRes=scenarios.map(sc=>{
+    const cf=runSc({...base,returnRate:sc.returnRate,monthly:sc.monthly});
+    const rr=cf.find(d=>d.age===retireAge)||cf[cf.length-1];
+    const fr=cf[cf.length-1];const ba=cf.find(d=>d.total<=0);
+    return{...sc,cf,retireVal:rr.total,finalVal:fr.total,breakAge:ba?ba.age:null};
+  });
+  document.getElementById('metrics').innerHTML=`
+    <div class="mc"><div class="ml">現在の総資産（円換算）</div><div class="mv">${Math.round(totalAsset).toLocaleString()}万円</div><div class="ms">不動産含む</div></div>
+    <div class="mc"><div class="ml">円建て資産</div><div class="mv">${Math.round(jpBal0).toLocaleString()}万円</div><div class="ms">${totalAsset>0?Math.round(jpBal0/totalAsset*100):0}%</div></div>
+    <div class="mc"><div class="ml">外貨資産（円換算）</div><div class="mv">${Math.round(fxBal0).toLocaleString()}万円</div><div class="ms">${totalAsset>0?Math.round(fxBal0/totalAsset*100):0}%</div></div>`;
+  const mid=gRes[1];const wb=document.getElementById('warnBox');
+  if(mid.breakAge){wb.style.display='block';wb.textContent=`標準シナリオでは${mid.breakAge}歳頃に資産が枯渇する見込みです。積立増額・支出見直しをご検討ください。`}
+  else if(mid.retireVal<goalAsset){wb.style.display='block';wb.textContent=`標準シナリオでは退職時の資産が目標 ${goalAsset.toLocaleString()}万円 を下回る見込みです（${mid.retireVal.toLocaleString()}万円）。`}
+  else wb.style.display='none';
+  document.getElementById('scCards').innerHTML=gRes.map((sc,i)=>{
+    const ok=sc.retireVal>=goalAsset;
+    const badge=sc.breakAge?`<span class="badge b-d">枯渇 ${sc.breakAge}歳</span>`:ok?`<span class="badge b-ok">目標達成</span>`:`<span class="badge b-w">目標未達</span>`;
+    return`<div class="sc-card${i===1?' best':''}">
+      <div style="font-size:11px;font-weight:700;color:${sc.color};margin-bottom:6px;display:flex;align-items:center;gap:6px">${i===1?'<span class="badge b-s">標準</span>':''}<span>${sc.label}シナリオ</span> ${badge}</div>
+      <div style="font-size:11px;color:var(--text2);margin-bottom:8px">${Math.round(sc.returnRate*100)}%リターン / 積立${Math.round(sc.monthly/12)}万円/月</div>
+      <div style="font-size:18px;font-weight:700;color:var(--brand);margin-bottom:2px">${sc.retireVal.toLocaleString()}万円</div>
+      <div style="font-size:11px;color:var(--text2)">退職時（${retireAge}歳）残高</div>
+      <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">
+        <div style="font-size:11px;color:var(--text2)">${endAge}歳時点</div>
+        <div style="font-size:14px;font-weight:700;color:var(--brand)">${sc.finalVal.toLocaleString()}万円</div>
+      </div></div>`;
+  }).join('');
+  const labels=gRes[0].cf.map(d=>d.age+'歳');
+  const goalLine=gRes[0].cf.map(()=>goalAsset);
+  if(charts['cf'])charts['cf'].destroy();
+  charts['cf']=new Chart(document.getElementById('chartCF'),{
+    type:'line',data:{labels,datasets:[
+      ...gRes.map(sc=>({label:sc.label,data:sc.cf.map(d=>d.total),borderColor:sc.color,backgroundColor:'transparent',tension:0.3,borderWidth:2.5,borderDash:sc.dash,pointRadius:0})),
+      {label:'目標額',data:goalLine,borderColor:'#ba7517',backgroundColor:'transparent',borderWidth:1.5,borderDash:[6,3],pointRadius:0}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      scales:{y:{ticks:{callback:v=>v>=10000?(v/10000).toFixed(1)+'億':v.toLocaleString()+'万',font:{size:11}},grid:{color:'rgba(0,0,0,0.05)'}},x:{ticks:{autoSkip:true,maxTicksLimit:14,font:{size:11}}}},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.raw.toLocaleString()}万円`}}}
+    }
+  });
+  document.getElementById('legCF').innerHTML=[...gRes.map(sc=>`<span class="li"><span class="ld" style="background:${sc.color}"></span>${sc.label}シナリオ</span>`),`<span class="li"><span class="ld" style="background:#ba7517"></span>目標額</span>`].join('');
+  const COLS=['#3266ad','#1d9e75','#d85a30','#ba7517','#993356','#537ab7','#639922'];
+  function buildPie(cid,lid,obj){
+    const ks=Object.keys(obj).filter(k=>obj[k]>0);const data=ks.map(k=>Math.round(obj[k]));
+    const tot=data.reduce((a,b)=>a+b,0);const colors=ks.map((_,i)=>COLS[i%COLS.length]);
+    if(charts[cid])charts[cid].destroy();
+    charts[cid]=new Chart(document.getElementById(cid),{
+      type:'doughnut',data:{labels:ks,datasets:[{data,backgroundColor:colors,borderWidth:0}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${c.raw.toLocaleString()}万円 (${Math.round(c.raw/tot*100)}%)`}}}}
+    });
+    document.getElementById(lid).innerHTML=ks.map((l,i)=>`<span class="li"><span class="ld" style="background:${colors[i]}"></span>${l} ${Math.round(data[i]/tot*100)}%</span>`).join('');
+  }
+  const curMap={};
+  if(jpBal0+realestate>0)curMap['JPY']=jpBal0+realestate;
+  fxRows.forEach(r=>{curMap[r.cur]=(curMap[r.cur]||0)+r.jpy});
+  const catMap={};
+  if(vv('cash')>0)catMap['預貯金']=vv('cash');if(vv('jpStock')>0)catMap['国内投資']=vv('jpStock');
+  if(vv('nisa')>0)catMap['NISA']=vv('nisa');if(vv('ideco')>0)catMap['iDeCo']=vv('ideco');
+  if(vv('insurance')>0)catMap['保険']=vv('insurance');if(realestate>0)catMap['不動産']=realestate;
+  if(fxBal0>0)catMap['海外資産']=fxBal0;
+  buildPie('chartCur','legCur',curMap);buildPie('chartCat','legCat',catMap);
+  const midCF=gRes[1].cf;const evSet=new Set(gEv.map(e=>e.age));
+  const evMap={};gEv.forEach(e=>{evMap[e.age]=(evMap[e.age]?evMap[e.age]+' / ':'')+e.label});
+  document.getElementById('cfBody').innerHTML=midCF.map(d=>{
+    const isEv=evSet.has(d.age);
+    return`<tr${isEv?' class="ev-row"':''}>
+      <td style="line-height:1.4">${d.age}歳${isEv?`<br><span style="font-size:10px">${evMap[d.age]}</span>`:''}</td>
+      <td>${d.yi.toLocaleString()}</td><td>${d.yo.toLocaleString()}</td>
+      <td style="color:${d.cf>=0?'#1d9e75':'#c0392b'};font-weight:600">${d.cf>=0?'+':''}${d.cf.toLocaleString()}</td>
+      <td style="font-weight:700;color:${d.total<goalAsset&&d.age>=retireAge?'#c0392b':'var(--brand)'}">${d.total.toLocaleString()}</td>
+      <td>${d.jp.toLocaleString()}</td><td>${d.fx.toLocaleString()}</td>
+    </tr>`;
+  }).join('');
+}
+function doPrint(){
+  const fn=sv('firstName')||'様',pref=sv('pref'),city=sv('city');
+  const today=new Date().toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('pdMeta').innerHTML=`<div style="font-size:11pt;font-weight:800;color:#0a3d62">${fn} 様　資産形成シミュレーションレポート</div><div>作成日：${today}</div>${pref||city?`<div>ご住所：${pref} ${city}</div>`:''}`;
+  document.getElementById('pdFoot').textContent=today+' 作成';
+  const p=gP;const ta=p.totalAsset||0,jp=p.jpBal0||0,fx=p.fxBal0||0;
+  document.getElementById('pdClient').innerHTML=`
+    <div><div class="pd-cl">お名前</div><div class="pd-cv">${fn} 様</div></div>
+    <div><div class="pd-cl">年齢</div><div class="pd-cv">${p.age}歳</div></div>
+    ${pref?`<div><div class="pd-cl">お住まい</div><div class="pd-cv">${pref} ${city}</div></div>`:''}
+    <div><div class="pd-cl">退職目標年齢</div><div class="pd-cv">${p.retireAge}歳</div></div>
+    <div><div class="pd-cl">老後の目標資産</div><div class="pd-cv">${(p.goalAsset||0).toLocaleString()}万円</div></div>`;
+  document.getElementById('pdMetrics').innerHTML=`
+    <div class="pd-mc"><div class="pd-ml">総資産（円換算）</div><div class="pd-mv">${Math.round(ta).toLocaleString()}万円</div><div class="pd-ms">不動産含む</div></div>
+    <div class="pd-mc"><div class="pd-ml">円建て資産</div><div class="pd-mv">${Math.round(jp).toLocaleString()}万円</div><div class="pd-ms">${ta>0?Math.round(jp/ta*100):0}%</div></div>
+    <div class="pd-mc"><div class="pd-ml">外貨資産（円換算）</div><div class="pd-mv">${Math.round(fx).toLocaleString()}万円</div><div class="pd-ms">${ta>0?Math.round(fx/ta*100):0}%</div></div>`;
+  const fxP=ta>0?Math.round(fx/ta*100):0;
+  document.getElementById('pdAlloc').innerHTML=`
+    <div class="pd-alloc"><div class="pd-seg" style="background:#185fa5;width:${fxP}%">${fxP>6?fxP+'% 外貨':''}</div><div class="pd-seg" style="background:#888780;flex:1">${100-fxP}% 円建て</div></div>
+    <div style="display:flex;gap:14px;font-size:8pt;color:#555;margin-top:3px"><span style="color:#185fa5">■ 外貨・海外資産 ${fxP}%</span><span style="color:#666">■ 円建て資産 ${100-fxP}%</span></div>`;
+  document.getElementById('pdSc').innerHTML=gRes.map((sc,i)=>{
+    const ok=sc.retireVal>=(p.goalAsset||0);
+    const st=sc.breakAge?`枯渇 ${sc.breakAge}歳`:ok?'目標達成':'目標未達';
+    const stC=sc.breakAge?'#c0392b':ok?'#1d9e75':'#ba7517';
+    return`<div class="pd-sc${i===1?' mid':''}">
+      <div style="font-size:9pt;font-weight:700;color:${sc.color};margin-bottom:3px">${sc.label}シナリオ <span style="color:${stC}">${st}</span></div>
+      <div style="font-size:7.5pt;color:#666;margin-bottom:4px">${Math.round(sc.returnRate*100)}%リターン / 積立${Math.round(sc.monthly/12)}万円/月</div>
+      <div style="font-size:13pt;font-weight:800;color:#0a3d62">${sc.retireVal.toLocaleString()}万円</div>
+      <div style="font-size:7.5pt;color:#555">退職時（${p.retireAge}歳）残高</div>
+      <div style="margin-top:5px;padding-top:4px;border-top:0.5px solid #ddd;font-size:8pt;color:#555">${p.endAge}歳時点：${sc.finalVal.toLocaleString()}万円</div>
+    </div>`;
+  }).join('');
+  const midCF=gRes[1].cf;const evSet=new Set(gEv.map(e=>e.age));
+  const evMap={};gEv.forEach(e=>{evMap[e.age]=(evMap[e.age]?evMap[e.age]+'/':'')+e.label});
+  const rows=midCF.filter(d=>evSet.has(d.age)||d.age===p.retireAge||d.age===p.pensionAge||d.age%5===0);
+  document.getElementById('pdCf').innerHTML=rows.map(d=>{
+    const isEv=evSet.has(d.age);
+    return`<tr${isEv?' class="pd-ev"':''}>
+      <td>${d.age}歳${isEv?' ◆'+evMap[d.age]:''}</td>
+      <td>${d.yi.toLocaleString()}</td><td>${d.yo.toLocaleString()}</td>
+      <td style="color:${d.cf>=0?'#1d9e75':'#c0392b'};font-weight:700">${d.cf>=0?'+':''}${d.cf.toLocaleString()}</td>
+      <td style="font-weight:700;color:${d.total<(p.goalAsset||0)&&d.age>=p.retireAge?'#c0392b':'#0a3d62'}">${d.total.toLocaleString()}</td>
+      <td>${d.jp.toLocaleString()}</td><td>${d.fx.toLocaleString()}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('pdDisc').textContent='※本レポートは仮定に基づく試算です。実際の運用成果・税務処理等を保証するものではありません。詳細は担当コンサルタントまでお問い合わせください。';
+  window.print();
+}
+</script>
+</body>
+</html>
